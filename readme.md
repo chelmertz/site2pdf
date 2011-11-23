@@ -2,6 +2,10 @@
 
 Generate a pdf of a whole domain.
 
+## Example
+
+        ruby site2pdf.rb http://12factor.net
+
 ## Depenedencies
 
 - wkhtmltopdf (`brew install wkhtmltopdf`)

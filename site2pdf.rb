@@ -21,7 +21,7 @@ def get_uris(site)
     agent.get(site).links.each do |link|
       href = link.href
       # URI.parse tips at http://stackoverflow.com/q/2719009/49879
-      if href != '/' and !URI.parse(href).host and !visited.include?(href) and !to_visit.include?(href)
+      if !URI.parse(href).host and !visited.include?(href) and !to_visit.include?(href)
         to_visit << href
       end
     end
@@ -50,4 +50,15 @@ end
 output = ARGV[1] || site.sub(/^http:\/\//, '').sub(/\/$/, '')+".pdf"
 
 uris = get_uris(site)
-p uris
+
+uris.map! do |uri|
+  if uri.start_with?("/")
+    site + uri
+  end
+end
+
+uris.compact!
+
+puts "#{uris.count} uris found, calling wkhtmltopdf.."
+
+
