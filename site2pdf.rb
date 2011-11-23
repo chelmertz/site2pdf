@@ -20,6 +20,7 @@ def get_uris(site)
     to_visit.delete(site)
     agent.get(site).links.each do |link|
       href = link.href
+      # URI.parse tips at http://stackoverflow.com/q/2719009/49879
       if href != '/' and !URI.parse(href).host and !visited.include?(href) and !to_visit.include?(href)
         to_visit << href
       end
