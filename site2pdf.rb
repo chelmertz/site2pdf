@@ -30,6 +30,7 @@ def get_uris(site)
   visited
 end
 
+# @todo use http://ruby-doc.org/stdlib-1.9.3/libdoc/optparse/rdoc/OptionParser.html
 site = ARGV[0]
 
 if not site
