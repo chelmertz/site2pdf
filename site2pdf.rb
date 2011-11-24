@@ -61,4 +61,9 @@ uris.compact!
 
 puts "#{uris.count} uris found, calling wkhtmltopdf.."
 
-
+result = system "wkhtmltopdf #{uris.join(' ')} #{output}"
+if $?
+  puts "Error, couldn't generate a pdf "
+else
+  puts "wkhtmltopdf is done, output file is now at #{output}"
+end
