@@ -1,15 +1,33 @@
 require 'rubygems'
 require 'bundler/setup'
+
 Bundler.require(:default)
 
 def usage
-  puts <<USAGE
+  usage <<USAGE
   #{__FILE__} parses a site for you
 
   Usage:
     #{__FILE__} <site> [<output pdf file>]
+  
+  Requirements:
+    - wkhtmltopdf (compiled with qt for support for multiple pages into one pdf)
+      source for mac found here: http://www.downloadplex.com/Mac/Network-Internet/Search-Lookup-Tools/wkhtmltopdf-for-mac_257814.html
     
 USAGE
+  puts usage
+end
+
+# taken from http://stackoverflow.com/q/5471032/49879
+def which(cmd)
+  exts = ENV['PATHEXT'] ? ENV['PATHEXT'].split(';') : ['']
+  ENV['PATH'].split(File::PATH_SEPARATOR).each do |path|
+    exts.each { |ext|
+      exe = "#{path}/#{cmd}#{ext}"
+      return exe if File.executable? exe
+    }
+  end
+  return nil
 end
 
 def get_uris(site)
@@ -39,6 +57,12 @@ if not site
   exit
 end
 
+if not which("wkhtmltopdf")
+  puts "Must have wkhtmltopdf installed. Google and it will be yours in one minute"
+  exit(false)
+end
+
+
 if not site =~ /^https?:\/\//
   puts "Neither http or https protocol detected, using http"
   site = "http://" + site
@@ -63,8 +87,8 @@ uris.compact!
 
 puts "#{uris.count} uris found, calling wkhtmltopdf.."
 
-result = system "wkhtmltopdf #{uris.join(' ')} #{output}"
-if $?
+system "wkhtmltopdf #{uris.join(' ')} #{output}"
+if not $?
   puts "Error, couldn't generate a pdf "
 else
   puts "wkhtmltopdf is done, output file is now at #{output}"
