@@ -1,5 +1,6 @@
 require 'rubygems'
-require 'mechanize'
+require 'bundler/setup'
+Bundler.require(:default)
 
 def usage
   puts <<USAGE
