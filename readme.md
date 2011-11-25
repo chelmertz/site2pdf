@@ -1,6 +1,6 @@
 # site2pdf
 
-Generate a pdf of a whole domain.
+Generate a pdf of a whole domain's pages, detected by crawling the URI given.
 
 ## Example
 
